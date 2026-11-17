@@ -2,6 +2,7 @@ import { listen } from "@tauri-apps/api/event";
 import React, { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import "./RecordingOverlay.css";
+import "./compact.css"; // fork AlexandreL04 : pilule minimale compacte
 import { commands, events } from "@/bindings";
 import type {
   Notice,

@@ -1,0 +1,63 @@
+/* ============================================================
+   Fork AlexandreL04/Handy — pilule « minimal » vraiment minimale.
+
+   Tout le patch du fork tient dans ce fichier + une ligne d'import dans
+   RecordingOverlay.tsx, pour que la mise à jour depuis cjpais/Handy ne
+   produise (presque) jamais de conflit. Si l'amont renomme ses classes, ces
+   règles cessent simplement de s'appliquer : on retombe sur la pilule
+   d'origine, rien ne casse.
+
+   Portée : la pilule du mode Minimal (.scard.compact), hors notices
+   d'erreur (.cnotice), qui gardent leur titre lisible. Le mode Live n'est
+   pas touché.
+
+   - enregistrement : seulement l'onde, petite, sans point ni bouton ✕
+     (Échap annule toujours) ;
+   - transcription : seulement un petit spinner, sans libellé.
+   ============================================================ */
+
+.scard.compact:not(.cnotice) {
+  width: 52px;
+  border-radius: 999px;
+}
+.scard.compact.cworking:not(.cnotice) {
+  width: 26px;
+}
+
+.scard.compact:not(.cnotice) .sbase {
+  height: 20px;
+  padding: 0 8px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0;
+}
+
+/* Ni bouton ✕, ni libellé, ni point d'enregistrement : l'onde rose suffit. */
+.scard.compact:not(.cnotice) .sbase-r,
+.scard.compact:not(.cnotice) .swork-label,
+.scard.compact:not(.cnotice):not(.cworking) .sbase-l {
+  display: none;
+}
+.scard.compact.cworking:not(.cnotice) .sbase-l {
+  padding: 0;
+  justify-self: auto;
+}
+
+/* Onde : barres fines, hauteur ramenée à ~10 px (les hauteurs inline vont
+   de 3 à 18 px, on écrase le conteneur plutôt que de toucher au calcul). */
+.scard.compact:not(.cnotice) .swave {
+  gap: 2px;
+  padding-right: 0;
+  transform: scaleY(0.55);
+}
+.scard.compact:not(.cnotice) .swave i {
+  width: 2px;
+  border-radius: 1px;
+}
+
+.scard.compact:not(.cnotice) .sspinner {
+  width: 9px;
+  height: 9px;
+  border-width: 1.5px;
+}
