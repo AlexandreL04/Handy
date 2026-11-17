@@ -39,7 +39,8 @@ bun run tauri build --bundles deb --config '{"bundle":{"createUpdaterArtifacts":
 
 DEB=$(ls -t src-tauri/target/release/bundle/deb/*.deb | head -1)
 echo "→ Installation de $DEB"
-sudo apt install -y --reinstall "./$DEB"
+# Fenêtre de mot de passe KDE quand SUDO_ASKPASS est défini (sessions sans terminal).
+sudo ${SUDO_ASKPASS:+-A} apt install -y --reinstall "./$DEB"
 
 if pgrep -x handy >/dev/null; then
   pkill -x handy || true
