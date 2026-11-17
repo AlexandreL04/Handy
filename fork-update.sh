@@ -33,6 +33,16 @@ fi
 VAD=src-tauri/resources/models/silero-vad-v6.2-F32.gguf
 [ -f "$VAD" ] || curl -fL -o "$VAD" https://huggingface.co/handy-computer/silero-vad-v6.2-gguf/resolve/main/silero-vad-v6.2-F32.gguf
 
+# Build rapide : le profil release officiel (lto = true, codegen-units = 1)
+# fait l'optimisation finale sur un seul cœur. On le surcharge par variables
+# d'environnement, sans toucher à Cargo.toml (pas de conflit au rebase).
+# Binaire un peu plus gros ; la vitesse de transcription ne change pas (elle
+# vient du C++ de transcribe-cpp, compilé à part). Le cache src-tauri/target
+# est gardé d'un build à l'autre : seul ce qui change est recompilé.
+export CARGO_PROFILE_RELEASE_LTO=false
+export CARGO_PROFILE_RELEASE_CODEGEN_UNITS=16
+export CMAKE_BUILD_PARALLEL_LEVEL=$(nproc)
+
 bun install --frozen-lockfile
 # Sans clé de signature on ne produit pas les artefacts de l'updater officiel.
 bun run tauri build --bundles deb --config '{"bundle":{"createUpdaterArtifacts":false}}'
