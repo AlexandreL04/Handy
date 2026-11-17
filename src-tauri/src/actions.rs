@@ -913,6 +913,13 @@ impl ShortcutAction for TranscribeAction {
                                         // UI while this paste ran.
                                         let owns_ui =
                                             || RECORDING_SESSION.load(Ordering::SeqCst) == session;
+                                        // Fork AlexandreL04 : masquer la pilule dès le
+                                        // collage, sans attendre la restauration du
+                                        // presse-papiers (paste_delay_after_ms, 500 ms).
+                                        // Un échec relève quand même sa notice ci-dessous.
+                                        if owns_ui() {
+                                            utils::hide_recording_overlay(&ah_clone);
+                                        }
                                         let (outcome, notice) =
                                             match utils::paste(final_text, ah_clone.clone()) {
                                                 Ok(utils::PasteOutcome::Pasted) => {
